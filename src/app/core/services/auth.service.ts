@@ -54,22 +54,47 @@ export class AuthService {
     try {
       const payload = token.split('.')[1];
       if (!payload) return null;
+
       const decoded = JSON.parse(atob(payload));
-      console.log('Decoded JWT payload:', decoded);
+      console.log("Decoded JWT:", decoded);
+
+      // extrai role do token
+      let role: string | undefined = decoded.role;
+
+      // converte "ROLE_ADMIN" → "admin"
+      if (role?.startsWith("ROLE_")) {
+        if (role != null) {
+          role = role.replace("ROLE_", "").toLowerCase();
+        }
+      }
+
       return {
-        id: decoded.sub ?? undefined,
+        id: decoded.uid ?? undefined,
+        nome: decoded.nome ?? undefined,
         email: decoded.sub ?? undefined,
-        role: decoded.ROLE ?? undefined
-      } as Usuario;
+        role: role
+      };
+
     } catch (e) {
       return null;
     }
   }
+
 
   redirect() {
     this.route.queryParams.subscribe(params => {
       const returnUrl = params['returnUrl'] || '/home';
       this.router.navigateByUrl(returnUrl);
     });
+  }
+
+  hasRole(requiredRoles: string[]): boolean {
+    const user = this.getUser();
+    if (!user || !user.role) {
+      return false; // Não logado ou sem função definida
+    }
+
+    // Compara a função do usuário com as funções permitidas
+    return requiredRoles.includes(user.role);
   }
 }

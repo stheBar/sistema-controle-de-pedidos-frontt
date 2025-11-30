@@ -1,0 +1,14 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.two-cols {
+  display: flex;
+  gap: 12px;
+}
+
+.two-cols > * {
+  flex: 1;
+}

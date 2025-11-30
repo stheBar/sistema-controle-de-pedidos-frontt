@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>Gerenciar Conta</h2>
+
+<div mat-dialog-content class="container">
+
+  <div class="resumo">
+    <h3>Resumo</h3>
+    <p><strong>Mesa:</strong> {{ conta.mesa?.numero  }}</p>
+    <p><strong>Titular:</strong> {{ conta?.nomeTitular  }}</p>
+    <p>
+      <strong>Status:</strong>
+      <span class="status"
+            [ngClass]="{
+              'status-aberta': conta.contaStatus === 'ABERTA',
+              'status-pendente': conta.contaStatus === 'PENDENTE',
+              'status-fechada': conta.contaStatus === 'FECHADA'
+            }">
+        {{ statusLabel(conta.contaStatus) }}
+      </span>
+    </p>
+    <p>
+      <strong>Valor total:</strong>
+      {{ conta.valorTotal || 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+    </p>
+    <p><strong>Forma de pagamento:</strong> {{ conta.formaPagamento || '-' }}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="acoes">
+
+    <!-- PEDIR CONTA -->
+    <section class="acao">
+      <h3>Pedir conta</h3>
+      <p class="hint">
+        Recalcula o valor total e, se a conta estiver <b>ABERTA</b>, muda o status para <b>PENDENTE</b>.
+      </p>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="pedirConta()"
+        [disabled]="!podePedir() || pedindo">
+        {{ pedindo ? 'Pedindo...' : 'Pedir conta' }}
+      </button>
+
+      <div class="aviso" *ngIf="conta.contaStatus !== 'ABERTA'">
+        A conta só pode ser pedida quando está <b>ABERTA</b>.
+      </div>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <!-- PAGAR CONTA -->
+    <section class="acao">
+      <h3>Pagar conta</h3>
+      <p class="hint">
+        O backend só permite pagar se não houver pedidos com status <b>PENDENTE</b> ou <b>EM_PREPARO</b>.
+      </p>
+
+      <mat-form-field appearance="outline" style="width: 100%; margin-top: 8px;">
+        <mat-label>Forma de pagamento</mat-label>
+        <mat-select [(value)]="formaPagamento">
+          <mat-option *ngFor="let fp of formasPagamento" [value]="fp">
+            {{ fp }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="pagarConta()"
+        [disabled]="!podePagar() || !formaPagamento || pagando">
+        {{ pagando ? 'Processando...' : 'Pagar conta' }}
+      </button>
+
+      <div class="aviso" *ngIf="conta.contaStatus === 'FECHADA'">
+        Esta conta já está <b>FECHADA</b>.
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="fechar()">Fechar</button>
+</div>

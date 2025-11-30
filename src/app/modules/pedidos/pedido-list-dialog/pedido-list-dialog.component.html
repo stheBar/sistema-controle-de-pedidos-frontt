@@ -1,0 +1,93 @@
+<div class="dialog-container">
+
+  <h2>Pedidos da Mesa {{ mesa.numero }}</h2>
+
+  <div class="content-area">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    </div>
+
+    <!-- VAZIO -->
+    <div *ngIf="!loading && pedidos.length === 0" class="empty">
+      Nenhum pedido encontrado.
+    </div>
+
+    <!-- LISTA DE PEDIDOS -->
+    <div *ngIf="!loading && pedidos.length > 0" class="pedido-list">
+
+      <div *ngFor="let p of pedidos" class="pedido-card">
+
+        <!-- CABEÇALHO -->
+        <div class="pedido-header">
+          <span class="pid">Pedido #{{ p.idPedido }}</span>
+          <span class="pdata">{{ p.dataHoraPedido | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+
+        <!-- ITENS -->
+        <div class="pedido-itens">
+
+          <div *ngFor="let item of p.itens" class="item">
+
+            <!-- Nome + Quantidade -->
+            <div class="item-main">
+              <strong>{{ item?.produto?.nome ?? 'Produto' }}</strong>
+              <span class="qt">{{ item?.quantidade ?? 0 }}x</span>
+            </div>
+
+            <!-- Preços -->
+            <div class="item-precos">
+
+              <span>
+                Unitário:
+                <strong>
+                  {{
+                    (item?.precoUnitario ?? 0)
+                      | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+                  }}
+                </strong>
+              </span>
+
+              <span>
+                Subtotal:
+                <strong class="subtotal">
+                  {{
+                    ((item?.precoUnitario ?? 0) * (item?.quantidade ?? 0))
+                      | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+                  }}
+                </strong>
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="pedido-status">
+          <mat-form-field appearance="outline" class="status-field">
+            <mat-label>Status</mat-label>
+            <mat-select
+              [value]="p.pedidoStatus"
+              (selectionChange)="atualizarStatus(p, $event.value)">
+              <mat-option *ngFor="let s of statusOptions" [value]="s">
+                {{ s }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="fechar()">Fechar</button>
+  </div>
+
+</div>

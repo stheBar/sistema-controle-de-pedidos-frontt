@@ -1,0 +1,110 @@
+<!-- src/app/modules/conta/conta-page.component.html -->
+
+<mat-card class="card">
+
+  <div class="header">
+
+    <div class="header-left">
+      <h2>Gerenciar Contas</h2>
+      <button mat-raised-button color="primary" (click)="abrirNovaConta()">
+        <mat-icon>add</mat-icon>
+        Nova Conta
+      </button>
+    </div>
+
+    <div class="header-right">
+
+      <mat-form-field appearance="outline" class="filtro-status">
+        <mat-label>Status</mat-label>
+        <mat-select
+          [value]="filtroStatus"
+          (selectionChange)="onChangeFiltroStatus($event.value)">
+          <mat-option value="TODOS">Todos</mat-option>
+          <mat-option value="ABERTA">Aberta</mat-option>
+          <mat-option value="PENDENTE">Pendente</mat-option>
+          <mat-option value="FECHADA">Fechada</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="!loading && dataSource.length === 0" class="empty">
+    Nenhuma conta encontrada.
+  </div>
+
+  <table *ngIf="!loading && dataSource.length > 0"
+         mat-table
+         [dataSource]="dataSource"
+         class="tabela">
+
+    <ng-container matColumnDef="mesa">
+      <th mat-header-cell *matHeaderCellDef>Mesa</th>
+      <td mat-cell *matCellDef="let c">{{ c.mesa?.numero ?? '-' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="titular">
+      <th mat-header-cell *matHeaderCellDef>Titular</th>
+      <td mat-cell *matCellDef="let c">
+        <div class="titular">
+          <div class="nome">{{ c.nomeTitular || '-' }}</div>
+          <div class="cpf" *ngIf="c.cpfTitular">{{ c.cpfTitular }}</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let c">
+        <span class="status"
+              [ngClass]="{
+                'status-aberta': c.contaStatus === 'ABERTA',
+                'status-pendente': c.contaStatus === 'PENDENTE',
+                'status-fechada': c.contaStatus === 'FECHADA'
+              }">
+          {{ statusLabel(c.contaStatus) }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valorTotal">
+      <th mat-header-cell *matHeaderCellDef>Valor Total</th>
+      <td mat-cell *matCellDef="let c">
+        {{ (c.valorTotal || 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="formaPagamento">
+      <th mat-header-cell *matHeaderCellDef>Pagamento</th>
+      <td mat-cell *matCellDef="let c">{{ c.formaPagamento || '-' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef>Ações</th>
+      <td mat-cell *matCellDef="let c">
+        <button mat-icon-button
+                matTooltip="Gerenciar status"
+                (click)="abrirGerenciarStatus(c)">
+          <mat-icon>receipt_long</mat-icon>
+        </button>
+
+        <button mat-icon-button
+                color="warn"
+                matTooltip="Excluir conta"
+                (click)="excluir(c)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  </table>
+
+</mat-card>

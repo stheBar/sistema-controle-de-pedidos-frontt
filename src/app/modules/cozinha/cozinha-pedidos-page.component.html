@@ -1,0 +1,120 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h1>Pedidos da Cozinha</h1>
+      <p class="sub">
+        Acompanhe os pedidos em tempo real e atualize o status conforme o preparo.
+      </p>
+    </div>
+
+    <button mat-stroked-button color="primary" (click)="carregarPedidos()">
+      <mat-icon>refresh</mat-icon>
+      Atualizar
+    </button>
+  </div>
+
+  <!-- Filtros de status -->
+  <div class="filtros">
+    <span class="filtros-label">Filtrar por status:</span>
+
+    <mat-chip-set>
+      <mat-chip
+        *ngFor="let s of statusOptions"
+        selectable
+        (click)="filtroStatus = s"
+        [class.chip-selected]="filtroStatus === s">
+        {{ labelFiltro(s) }}
+      </mat-chip>
+    </mat-chip-set>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+
+  <!-- Nenhum pedido -->
+  <div class="empty" *ngIf="!loading && pedidosFiltrados.length === 0">
+    Nenhum pedido encontrado para o filtro selecionado.
+  </div>
+
+  <!-- Lista de pedidos -->
+  <div class="lista" *ngIf="!loading && pedidosFiltrados.length > 0">
+
+    <mat-card
+      *ngFor="let view of pedidosFiltrados"
+      class="pedido-card">
+
+      <div class="pedido-header">
+        <div>
+          <div class="pedido-id">
+            Pedido #{{ view.pedido.idPedido }}
+          </div>
+          <div class="pedido-data">
+            {{ view.pedido.dataHoraPedido | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+          <div class="pedido-mesa">
+            Mesa {{ view.conta.mesa.numero }}
+            <span *ngIf="view.conta.nomeTitular">
+              — {{ view.conta.nomeTitular }}
+            </span>
+          </div>
+        </div>
+
+        <span class="badge-status">
+          {{ labelStatus(view.pedido.pedidoStatus) }}
+        </span>
+      </div>
+
+      <!-- Itens -->
+      <div class="pedido-itens">
+        <div class="item" *ngFor="let item of view.pedido.itens">
+          <div class="item-main">
+            <strong>{{ item?.produto?.nome }}</strong>
+            <span class="qt">{{ item?.quantidade ?? 0 }}x</span>
+          </div>
+
+          <div class="item-precos">
+            <span>
+              Unitário:
+              <strong>
+                {{
+                  (item?.precoUnitario ?? 0)
+                    | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+                }}
+              </strong>
+            </span>
+
+            <span>
+              Subtotal:
+              <strong class="subtotal">
+                {{
+                  ((item?.precoUnitario ?? 0) * (item?.quantidade ?? 0))
+                    | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+                }}
+              </strong>
+            </span>
+          </div>
+
+          <div class="item-obs" *ngIf="item?.observacao">
+            Obs: {{ item.observacao }}
+          </div>
+        </div>
+      </div>
+
+      <div class="pedido-footer">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="abrirDialogStatus(view)">
+          <mat-icon>edit</mat-icon>
+          Alterar status
+        </button>
+      </div>
+
+    </mat-card>
+
+  </div>
+
+</div>

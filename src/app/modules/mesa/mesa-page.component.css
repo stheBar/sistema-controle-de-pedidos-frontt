@@ -1,0 +1,36 @@
+.card {
+  padding: 20px;
+  margin: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tabela {
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.status.disp {
+  background-color: #4caf50;
+}
+
+.status.indisp {
+  background-color: #f44336;
+}

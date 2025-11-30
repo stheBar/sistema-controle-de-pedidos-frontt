@@ -1,0 +1,80 @@
+<div class="dialog-container">
+
+  <h2>Novo Pedido — Mesa {{ mesa.numero }}</h2>
+
+  <!-- FORM PRINCIPAL DE ADICIONAR ITEM -->
+  <form [formGroup]="form" class="add-form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Produto</mat-label>
+      <mat-select formControlName="produtoId">
+        <mat-option *ngFor="let p of produtos" [value]="p.id">
+          {{ p.nome }} — {{ p.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Quantidade</mat-label>
+      <input matInput type="number" min="1" formControlName="quantidade" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Observação</mat-label>
+      <textarea matInput rows="2" formControlName="observacao"></textarea>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary"
+            (click)="adicionarItem()"
+            [disabled]="form.invalid">
+      Adicionar item
+    </button>
+  </form>
+
+  <!-- LISTA DE ITENS ADICIONADOS -->
+  <div class="itens-list" *ngIf="itens.length > 0">
+
+    <div *ngFor="let item of itens; let i = index" class="item-card">
+
+      <div class="item-header">
+        <strong>{{ item.produto.nome }}</strong>
+        <button mat-icon-button color="warn" (click)="removerItem(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+      <p class="sub">
+        {{ item.quantidade }}x —
+        {{ item.produto.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+      </p>
+
+      <p class="sub green">
+        Subtotal:
+        {{ item.produto.preco * item.quantidade | currency:'BRL':'symbol' }}
+      </p>
+
+      <p *ngIf="item.observacao" class="obs">
+        Obs: {{ item.observacao }}
+      </p>
+
+    </div>
+
+    <!-- Total geral -->
+    <div class="total-box">
+      Total:
+      <strong>{{ total | currency:'BRL' }}</strong>
+    </div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="actions">
+    <button mat-stroked-button (click)="fechar()">Cancelar</button>
+
+    <button mat-flat-button color="primary"
+            (click)="salvarPedido()"
+            [disabled]="itens.length === 0 || salvando">
+      Salvar Pedido
+    </button>
+  </div>
+
+</div>

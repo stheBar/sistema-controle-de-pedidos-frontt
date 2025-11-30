@@ -1,0 +1,79 @@
+<div class="dialog-container">
+
+  <h2>Status do Pedido #{{ pedido.idPedido }}</h2>
+
+  <p class="sub">
+    Criado em:
+    <strong>
+      {{ pedido.dataHoraPedido | date:'dd/MM/yyyy HH:mm' }}
+    </strong>
+  </p>
+
+  <!-- ITENS (se tiver) -->
+  <div *ngIf="pedido.itens?.length" class="itens-box">
+    <h3>Itens</h3>
+
+    <div class="item" *ngFor="let item of pedido.itens">
+      <div class="item-main">
+        <strong>{{ item.produto?.nome || 'Produto' }}</strong>
+        <span class="qt">
+          {{ item.quantidade ?? 0 }}x
+        </span>
+      </div>
+
+      <div class="item-extra">
+        <span *ngIf="item.precoUnitario != null">
+          Unit.: {{
+            item.precoUnitario
+              | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+          }}
+        </span>
+
+        <span *ngIf="item.precoUnitario != null && item.quantidade != null">
+          Total: {{
+            (item.precoUnitario * item.quantidade)
+              | currency:'BRL':'symbol':'1.2-2':'pt-BR'
+          }}
+        </span>
+      </div>
+
+      <div *ngIf="item.observacao" class="obs">
+        {{ item.observacao }}
+      </div>
+    </div>
+  </div>
+
+  <!-- SELEÇÃO DE STATUS -->
+  <div class="status-box">
+    <mat-form-field appearance="outline" class="status-field">
+      <mat-label>Novo status</mat-label>
+      <mat-select [(ngModel)]="selectedStatus">
+        <mat-option *ngFor="let s of statusOptions" [value]="s">
+          {{ s }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="actions">
+    <button mat-button (click)="fechar()" [disabled]="salvando">
+      Cancelar
+    </button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="salvar()"
+      [disabled]="salvando"
+    >
+      <mat-progress-spinner
+        *ngIf="salvando"
+        diameter="18"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+      <span *ngIf="!salvando">Salvar</span>
+    </button>
+  </div>
+
+</div>

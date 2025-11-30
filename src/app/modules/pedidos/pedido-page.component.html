@@ -1,0 +1,80 @@
+<mat-card class="wrapper-card">
+
+  <header class="header">
+    <h2>Gestão de Pedidos por Mesa</h2>
+    <p class="sub">Acompanhe o status das contas, pedidos e ações rápidas.</p>
+  </header>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading-area">
+    <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+  </div>
+
+  <!-- LISTA DE MESAS -->
+  <section *ngIf="!loading" class="grid">
+
+    <article *ngFor="let card of cards" class="grid-item">
+
+      <mat-card class="mesa-card" [ngClass]="cardClass(card)">
+
+        <!-- HEADER DO CARD -->
+        <div class="mesa-header">
+
+          <div class="mesa-numero">
+            <span class="label">Mesa</span>
+            <h3>{{ card.mesa.numero }}</h3>
+          </div>
+
+          <mat-chip-set>
+            <mat-chip selected class="chip" [ngClass]="{
+              'chip-aberta': card.conta?.contaStatus === 'ABERTA',
+              'chip-pendente': card.conta?.contaStatus === 'PENDENTE',
+              'chip-fechada': card.conta?.contaStatus === 'FECHADA',
+              'chip-sem': !card.conta
+            }">
+              {{ statusContaLabel(card.conta) }}
+            </mat-chip>
+          </mat-chip-set>
+
+        </div>
+
+        <!-- DADOS DO TITULAR -->
+        <div class="mesa-body">
+          <p><strong>Titular:</strong> {{ card.conta?.nomeTitular || '—' }}</p>
+          <p *ngIf="card.conta?.cpfTitular"><strong>CPF:</strong> {{ card.conta?.cpfTitular }}</p>
+
+          <p>
+            <strong>Total:</strong>
+            {{ (card.conta?.valorTotal ?? 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+          </p>
+        </div>
+
+        <!-- AÇÕES -->
+        <footer class="mesa-actions">
+          <button mat-stroked-button color="primary"
+                  (click)="abrirModalPedidos(card)">
+            <mat-icon>list_alt</mat-icon>
+            Pedidos
+          </button>
+
+          <button mat-flat-button color="accent"
+                  (click)="abrirModalNovoPedido(card)"
+                  [disabled]="!card.conta">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Novo pedido
+          </button>
+
+          <button mat-stroked-button color="warn"
+                  (click)="abrirModalStatusConta(card)"
+                  [disabled]="!card.conta">
+            <mat-icon>receipt_long</mat-icon>
+            Status / Fechar
+          </button>
+        </footer>
+
+      </mat-card>
+    </article>
+
+  </section>
+
+</mat-card>

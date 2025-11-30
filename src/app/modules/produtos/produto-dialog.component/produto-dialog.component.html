@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>
+  {{ form.value.id ? 'Editar Produto' : 'Novo Produto' }}
+</h2>
+
+<form [formGroup]="form" style="padding: 20px;" class="dialog-form">
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="nome">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Descrição</mat-label>
+    <textarea matInput rows="3" formControlName="descricao"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Preço (R$)</mat-label>
+    <input matInput type="number" formControlName="preco">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Categoria</mat-label>
+    <mat-select formControlName="categoria">
+      <mat-option *ngFor="let c of categorias" [value]="c">{{ c }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-slide-toggle color="primary" formControlName="disponivel">
+    Disponível para venda
+  </mat-slide-toggle>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="salvar()" [disabled]="salvando">
+      Salvar
+      <mat-progress-spinner
+        *ngIf="salvando"
+        diameter="20"
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </button>
+
+    <button mat-button (click)="fechar()" [disabled]="salvando">
+      Cancelar
+    </button>
+  </div>
+
+</form>
