@@ -9,7 +9,6 @@
     </strong>
   </p>
 
-  <!-- ITENS (se tiver) -->
   <div *ngIf="pedido.itens?.length" class="itens-box">
     <h3>Itens</h3>
 
@@ -43,7 +42,6 @@
     </div>
   </div>
 
-  <!-- SELEÇÃO DE STATUS -->
   <div class="status-box">
     <mat-form-field appearance="outline" class="status-field">
       <mat-label>Novo status</mat-label>
@@ -55,7 +53,6 @@
     </mat-form-field>
   </div>
 
-  <!-- AÇÕES -->
   <div class="actions">
     <button mat-button (click)="fechar()" [disabled]="salvando">
       Cancelar

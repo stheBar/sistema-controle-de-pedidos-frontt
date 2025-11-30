@@ -1,5 +1,3 @@
-// src/app/core/services/conta.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -35,8 +33,7 @@ export interface ContaResumo {
 })
 export class ContaService {
 
-  // URL CORRETA DO SEU BACKEND
-  private api = 'http://localhost:8082/sistema-controle-pedidos/conta';
+  private api = 'http://localhost:8081/sistema-controle-pedidos/conta';
 
   constructor(private http: HttpClient) {}
 

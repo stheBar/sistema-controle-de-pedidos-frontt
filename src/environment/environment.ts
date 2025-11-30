@@ -1,4 +1,4 @@
 export const env = {
   production: false,
-  apiUrl: 'http://localhost:8082/sistema-controle-pedidos'
+  apiUrl: 'http://localhost:8081/sistema-controle-pedidos'
 }

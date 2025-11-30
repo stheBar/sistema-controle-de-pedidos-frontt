@@ -1,0 +1,57 @@
+<mat-toolbar color="primary" class="topbar">
+  <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="title">Sistema de Pedidos</span>
+
+  <span class="spacer"></span>
+
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Sair
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    class="sidenav"
+    [mode]="sidenavMode"
+    [opened]="!isMobile"
+  >
+    <!-- Cabeçalho do usuário -->
+    <div class="user-header" *ngIf="authService.getUser()">
+      <div class="avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="user-info">
+        <div class="user-name">
+          {{ authService.getUser()?.nome || authService.getUser()?.email }}
+        </div>
+        <div class="user-role">
+          {{ authService.getUser()?.role | titlecase }}
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-nav-list>
+      <a
+        mat-list-item
+        *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        (click)="onMenuItemClick()"
+      >
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

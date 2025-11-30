@@ -76,7 +76,6 @@ export class CozinhaPedidosPageComponent implements OnInit {
     this.carregarPedidos();
   }
 
-  /** Carrega contas ABERTAS e, para cada uma, busca seus pedidos */
   carregarPedidos(): void {
     this.loading = true;
     this.cd.markForCheck();
@@ -132,7 +131,6 @@ export class CozinhaPedidosPageComponent implements OnInit {
       });
   }
 
-  /** pedidos filtrados pelo chip */
   get pedidosFiltrados(): PedidoCozinhaView[] {
     if (this.filtroStatus === 'TODOS') return this.pedidos;
 

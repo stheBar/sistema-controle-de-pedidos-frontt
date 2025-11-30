@@ -1,5 +1,3 @@
-// src/app/core/models/pedido.ts
-
 export type PedidoStatus =
   | 'PENDENTE'
   | 'EM_PREPARO'
@@ -14,7 +12,7 @@ export interface ProdutoResumo {
 
 export interface PedidoItem {
   idItem?: number;
-  produto?: ProdutoResumo;   // <-- CORRETO
+  produto?: ProdutoResumo;
   quantidade?: number;
   precoUnitario?: number;
   observacao?: string;
@@ -24,5 +22,5 @@ export interface Pedido {
   idPedido?: number;
   dataHoraPedido?: string;
   pedidoStatus?: PedidoStatus;
-  itens?: PedidoItem[];       // <-- CORRETO
+  itens?: PedidoItem[];
 }

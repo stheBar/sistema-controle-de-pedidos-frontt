@@ -8,17 +8,15 @@ import { Pedido, PedidoStatus } from '../models/pedido';
 })
 export class PedidoService {
 
-  private api = 'http://localhost:8082/sistema-controle-pedidos/pedido';
+  private api = 'http://localhost:8081/sistema-controle-pedidos/pedido';
 
   constructor(private http: HttpClient) {}
 
-  /** Listar pedidos pela conta */
   listarPorConta(idConta: number): Observable<Pedido[]> {
     const params = new HttpParams().set('idConta', idConta);
     return this.http.get<Pedido[]>(`${this.api}/listar-por-conta`, { params});
   }
 
-  /** Atualizar status */
   atualizarStatus(idPedido: number, status: PedidoStatus): Observable<Pedido> {
     const params = new HttpParams().set('status', status);
     return this.http.patch<Pedido>(`${this.api}/${idPedido}/status`, {}, { params });

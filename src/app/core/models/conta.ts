@@ -1,5 +1,3 @@
-// src/app/core/models/conta.ts
-
 export type ContaStatus = 'ABERTA' | 'PENDENTE' | 'FECHADA';
 
 export enum FormaPagamento {

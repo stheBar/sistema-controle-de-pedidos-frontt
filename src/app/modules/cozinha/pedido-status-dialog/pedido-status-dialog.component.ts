@@ -1,5 +1,3 @@
-// src/app/modules/cozinha/pedido-status-dialog.component.ts
-
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {

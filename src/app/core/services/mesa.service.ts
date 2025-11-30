@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MesaService {
 
-  private api = 'http://localhost:8082/sistema-controle-pedidos/mesa';
+  private api = 'http://localhost:8081/sistema-controle-pedidos/mesa';
 
   constructor(private http: HttpClient) {}
 

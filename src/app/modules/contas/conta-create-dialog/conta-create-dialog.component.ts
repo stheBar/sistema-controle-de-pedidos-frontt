@@ -1,5 +1,3 @@
-// src/app/modules/conta/conta-create-dialog/conta-create-dialog.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';

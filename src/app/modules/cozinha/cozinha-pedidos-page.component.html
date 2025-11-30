@@ -29,17 +29,14 @@
     </mat-chip-set>
   </div>
 
-  <!-- Loading -->
   <div class="loading" *ngIf="loading">
     <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
   </div>
 
-  <!-- Nenhum pedido -->
   <div class="empty" *ngIf="!loading && pedidosFiltrados.length === 0">
     Nenhum pedido encontrado para o filtro selecionado.
   </div>
 
-  <!-- Lista de pedidos -->
   <div class="lista" *ngIf="!loading && pedidosFiltrados.length > 0">
 
     <mat-card
@@ -67,7 +64,6 @@
         </span>
       </div>
 
-      <!-- Itens -->
       <div class="pedido-itens">
         <div class="item" *ngFor="let item of view.pedido.itens">
           <div class="item-main">

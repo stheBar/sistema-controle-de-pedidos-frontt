@@ -5,7 +5,6 @@
 
     <form [formGroup]="form" (ngSubmit)="logar()">
 
-      <!-- EMAIL -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" placeholder="exemplo@email.com">
@@ -15,7 +14,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- SENHA -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Senha</mat-label>
 
@@ -32,12 +30,10 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- CHECKBOX -->
       <mat-checkbox formControlName="lembrar">
         Lembrar login
       </mat-checkbox>
 
-      <!-- BOTÃO -->
       <button mat-raised-button
               color="primary"
               class="full-width login-btn"

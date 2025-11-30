@@ -58,10 +58,8 @@ export class AuthService {
       const decoded = JSON.parse(atob(payload));
       console.log("Decoded JWT:", decoded);
 
-      // extrai role do token
       let role: string | undefined = decoded.role;
 
-      // converte "ROLE_ADMIN" → "admin"
       if (role?.startsWith("ROLE_")) {
         if (role != null) {
           role = role.replace("ROLE_", "").toLowerCase();
@@ -80,7 +78,6 @@ export class AuthService {
     }
   }
 
-
   redirect() {
     this.route.queryParams.subscribe(params => {
       const returnUrl = params['returnUrl'] || '/home';
@@ -91,10 +88,9 @@ export class AuthService {
   hasRole(requiredRoles: string[]): boolean {
     const user = this.getUser();
     if (!user || !user.role) {
-      return false; // Não logado ou sem função definida
+      return false;
     }
 
-    // Compara a função do usuário com as funções permitidas
     return requiredRoles.includes(user.role);
   }
 }
